@@ -17,9 +17,9 @@ typedef struct _nodo
 } tipoNodo;                       /* Nombre del tipo */
 
 /* Funciones prototipo */
-void BorrarArbol(tipoNodo *n);
+void BorrarArbolD(tipoNodo *n);
 
-int main(int argc, char *argv[])
+int decompress(const char* archivoEntrada, const char* archivoSalida)
 {
    tipoNodo *Arbol;        /* Arbol de codificación */
    long int Longitud;      /* Longitud de fichero */
@@ -31,17 +31,11 @@ int main(int argc, char *argv[])
    unsigned char a;
    int i, j;
 
-   if(argc < 3)
-   {
-      printf("Usar:\n%s <fichero_entrada> <fichero_salida>\n", argv[0]);
-      return 1;
-   }
-
    /* Crear un arbol con la información de la tabla */
    Arbol = (tipoNodo *)malloc(sizeof(tipoNodo)); /* un nodo nuevo */
    Arbol->letra = 0;
    Arbol->uno = Arbol->cero = NULL;
-   fe = fopen(argv[1], "rb");
+   fe = fopen(archivoEntrada, "rb");
    fread(&Longitud, sizeof(long int), 1, fe); /* Lee el número de caracteres */
    fread(&nElementos, sizeof(int), 1, fe); /* Lee el número de elementos */
    for(i = 0; i < nElementos; i++) /* Leer todos los elementos */
@@ -84,7 +78,7 @@ int main(int argc, char *argv[])
    }
    /* Leer datos comprimidos y extraer al fichero de salida */
    bits = 0;
-   fs = fopen(argv[2], "w");
+   fs = fopen(archivoSalida, "wb");
    /* Lee los primeros cuatro bytes en la dobel palabra bits */
    fread(&a, sizeof(char), 1, fe);
    bits |= a;
@@ -122,14 +116,14 @@ int main(int argc, char *argv[])
    fclose(fs);                         /* Cerramos ficheros */
    fclose(fe);
 
-   BorrarArbol(Arbol);                 /* Borramos el árbol */
+   BorrarArbolD(Arbol);                 /* Borramos el árbol */
    return 0;
 }
 
 /* Función recursiva para borrar un arbol */
-void BorrarArbol(tipoNodo *n)
+void BorrarArbolD(tipoNodo *n)
 {
-   if(n->cero) BorrarArbol(n->cero);
-   if(n->uno)  BorrarArbol(n->uno);
+   if(n->cero) BorrarArbolD(n->cero);
+   if(n->uno)  BorrarArbolD(n->uno);
    free(n);
 }

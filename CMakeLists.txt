@@ -1,18 +1,17 @@
-cmake_minimum_required(VERSION 3.1)
-project(compres C)
+
+cmake_minimum_required(VERSION 3.15)
+
+project(HuffmanCompressor C)
 
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
-add_executable(compres compres.c)
-add_executable(decompres decompres.c)
+add_executable(huffman
+    main.c
+    compres.c
+    decompres.c
+)
 
-install(TARGETS compres decompres
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
-
-add_custom_target(clean-all
-  make clean && rm -fR ${CMAKE_BINARY_DIR}/CMakeCache.txt
-                       ${CMAKE_BINARY_DIR}/cmake_install.cmake
-                       ${CMAKE_BINARY_DIR}/Makefile
-                       ${CMAKE_BINARY_DIR}/CMakeFiles
-                       ${CMAKE_BINARY_DIR}/install_manifest.txt
+target_include_directories(huffman PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )

@@ -1,0 +1,35 @@
+
+<Solution>
+	<Configurations>
+		<BuildType Name="Debug" />
+		<BuildType Name="Release" />
+		<BuildType Name="MinSizeRel" />
+		<BuildType Name="RelWithDebInfo" />
+		<Platform Name="x64" />
+	</Configurations>
+	<Folder Name="/Elementos de la solución/">
+		<File Path="huffman.h" />
+		<File Path="main.c" />
+	</Folder>
+	<Project Path="ALL_BUILD.vcxproj" Id="308fd73e-23dd-364f-aaa5-54109750163b">
+		<BuildDependency Project="compres.vcxproj" />
+		<BuildDependency Project="decompres.vcxproj" />
+		<BuildDependency Project="ZERO_CHECK.vcxproj" />
+	</Project>
+	<Project Path="clean-all.vcxproj" Id="54817921-71c2-32ee-a7db-b5bf051fa369">
+		<BuildDependency Project="ZERO_CHECK.vcxproj" />
+		<Build Project="false" />
+	</Project>
+	<Project Path="compres.vcxproj" Id="916af3fd-46d6-34a3-9cfa-d76608d4c461">
+		<BuildDependency Project="ZERO_CHECK.vcxproj" />
+	</Project>
+	<Project Path="decompres.vcxproj" Id="02810846-963a-3a64-9c79-f11737f8b366">
+		<BuildDependency Project="ZERO_CHECK.vcxproj" />
+	</Project>
+	<Project Path="INSTALL.vcxproj" Id="028021e6-1920-3eaa-aef4-cd5e4e5259ec">
+		<BuildDependency Project="ALL_BUILD.vcxproj" />
+		<BuildDependency Project="ZERO_CHECK.vcxproj" />
+		<Build Project="false" />
+	</Project>
+	<Project Path="ZERO_CHECK.vcxproj" Id="d01a015f-123b-3c59-a374-2e55322d8ffa" />
+</Solution>

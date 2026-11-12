@@ -36,12 +36,12 @@ tipoTabla *Tabla;
 void Cuenta(tipoNodo** Lista, unsigned char c);
 void Ordenar(tipoNodo** Lista);
 void InsertarOrden(tipoNodo** Cabeza, tipoNodo *e);
-void BorrarArbol(tipoNodo *n);
+void BorrarArbolC(tipoNodo *n);
 void CrearTabla(tipoNodo *n, int l, int v);
 void InsertarTabla(unsigned char c, int l, int v);
 tipoTabla *BuscaCaracter(tipoTabla *Tabla, unsigned char c);
 
-int main(int argc, char *argv[])
+int comprimir(const char* archivoEntrada, const char* archivoSalida) 
 {
    tipoNodo *Lista;       /* Lista de letras y frecuencias */
    tipoNodo *Arbol;       /* Arbol de letras y frecuencias */
@@ -56,15 +56,9 @@ int main(int argc, char *argv[])
    unsigned long int dWORD; /* Soble palabra usada durante la codificación */
    int nBits;               /* Número de bits usados de dWORD */
 
-   if(argc < 3)
-   {
-      printf("Usar:\n%s <fichero_entrada> <fichero_salida>\n", argv[0]);
-      return 1;
-   }
-
    Lista = NULL;
    /* Fase 1: contar frecuencias */
-   fe = fopen(argv[1], "r");
+   fe = fopen(archivoEntrada, "rb");
    do {
       c = fgetc(fe);
       if( feof(fe) ) {
@@ -98,7 +92,7 @@ int main(int argc, char *argv[])
    CrearTabla(Arbol, 0, 0);
 
    /* Crear fichero comprimido */
-   fs = fopen(argv[2], "wb");
+   fs = fopen(archivoSalida, "wb");
    /* Escribir la longitud del fichero */
    fwrite(&Longitud, sizeof(long int), 1, fs);
    /* Cuenta el número de elementos de tabla */
@@ -122,7 +116,7 @@ int main(int argc, char *argv[])
    }
 
    /* Codificación del fichero de entrada */
-   fe = fopen(argv[1], "r");
+   fe = fopen(archivoEntrada, "rb");
    dWORD = 0; /* Valor inicial. */
    nBits = 0; /* Ningún bit */
    do {
@@ -156,7 +150,7 @@ int main(int argc, char *argv[])
    fclose(fs);
 
    /* Borrar Arbol */
-   BorrarArbol(Arbol);
+   BorrarArbolC(Arbol);
 
    /* Borrar Tabla */
    while(Tabla)
@@ -299,19 +293,18 @@ void InsertarTabla(unsigned char c, int l, int v)
 }
 
 /* Buscar un caracter en la tabla, devielve un puntero al elemento de la tabla */
-tipoTabla *BuscaCaracter(tipoTabla *Tabla, unsigned char c)
+tipoTabla* BuscaCaracter(tipoTabla* Tabla, unsigned char c)
 {
-   tipoTabla *t;
+   tipoTabla* t;
 
    t = Tabla;
-   while(t && t->letra != c) t = t->sig;
+   while (t && t->letra != c) t = t->sig;
    return t;
 }
-
 /* Función recursiva para borrar un arbol */
-void BorrarArbol(tipoNodo *n)
+void BorrarArbolC(tipoNodo *n)
 {
-   if(n->cero) BorrarArbol(n->cero);
-   if(n->uno)  BorrarArbol(n->uno);
+   if(n->cero) BorrarArbolC(n->cero);
+   if(n->uno)  BorrarArbolC(n->uno);
    free(n);
 }
