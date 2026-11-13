@@ -15,6 +15,7 @@ typedef struct _nodo
    unsigned char letra;    /* Letra a la que hace referencia el nodo */
    int frecuencia;         /* veces que aparece la letra en el texto o las letras */
                            /* de los nodos de las ramas cero y uno */
+
    struct _nodo *sig;      /* Puntero a siguiente nodo de una lista enlazada */
    struct _nodo *cero;     /* Puntero a la rama cero de un árbol */
    struct _nodo *uno;      /* Puntero a la rama uno de un árbol */
@@ -33,11 +34,13 @@ typedef struct _tabla
 tipoTabla *Tabla;
 
 /* Prototipos */
-void Cuenta(tipoNodo** Lista, unsigned char c);
+void Cuenta(tipoNodo** Lista, unsigned char c); 
 void Ordenar(tipoNodo** Lista);
 void InsertarOrden(tipoNodo** Cabeza, tipoNodo *e);
 void BorrarArbolC(tipoNodo *n);
 void CrearTabla(tipoNodo *n, int l, int v);
+
+
 void InsertarTabla(unsigned char c, int l, int v);
 tipoTabla *BuscaCaracter(tipoTabla *Tabla, unsigned char c);
 
@@ -58,8 +61,15 @@ int comprimir(const char* archivoEntrada, const char* archivoSalida)
 
    Lista = NULL;
    /* Fase 1: contar frecuencias */
+
+   // Esto sirve para abrir el archivo de entrada y contar la frecuencia de cada carácter en el archivo. 
+   // Se utiliza una lista enlazada para almacenar los caracteres y sus frecuencias. La función Cuenta se encarga de actualizar
+   // la lista con la frecuencia de cada carácter leído del archivo.
+   // 
+   // Abrir el archivo de entrada
    fe = fopen(archivoEntrada, "rb");
    do {
+      // Leer un byte del archivo de entrada
       c = fgetc(fe);
       if( feof(fe) ) {
          break ;
@@ -74,6 +84,8 @@ int comprimir(const char* archivoEntrada, const char* archivoSalida)
 
    /* Crear el arbol */
    Arbol = Lista;
+   // este while se encarga de construir el árbol de Huffman a partir de la lista de frecuencias.
+
    while(Arbol && Arbol->sig) /* Mientras existan al menos dos elementos en la lista */
    {
       p = (tipoNodo *)malloc(sizeof(tipoNodo)); /* Un nuevo árbol */
@@ -116,9 +128,13 @@ int comprimir(const char* archivoEntrada, const char* archivoSalida)
    }
 
    /* Codificación del fichero de entrada */
+   // rb: abre el archivo en modo binario para lectura, y wb: abre el archivo en modo binario para escritura.
    fe = fopen(archivoEntrada, "rb");
    dWORD = 0; /* Valor inicial. */
    nBits = 0; /* Ningún bit */
+
+   // ESTA PARTE DEL CÓDIGO SE ENCARGA DE LEER EL ARCHIVO DE ENTRADA, 
+   // BUSCAR CADA CARÁCTER EN LA TABLA DE CÓDIGOS Y ESCRIBIR LOS BITS CORRESPONDIENTES EN EL ARCHIVO DE SALIDA.
    do {
       c = fgetc(fe);
       if( feof(fe) ) {
