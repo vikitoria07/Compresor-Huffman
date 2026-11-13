@@ -1,55 +1,67 @@
-Algoritmo de compresión de Huffman
-----------------------------------
+# Compresor y Descompresor Huffman
 
-Compresión de archivos usando el Algoritmo de Huffman,
-código fuente original de Salvador Pozo Coronado (2000),
-con mínimas correcciones de Mariano Ruiz (2018-2021).
+Implementación del algoritmo de Huffman en lenguaje C para la compresión y descompresión de archivos.
 
-> ℹ En el branch `modo-debug` está una version que agrega unas
-> funciones que imprimen en el error stream (consola)
-> la tabla de frecuencias, la codificación
-> Huffman usada, junto con una representación en
-> árbol binario (ver [modo-debug#Ejecución](https://github.com/mrsarm/compres/tree/modo-debug#ejecuci%C3%B3n)).
+## Requisitos
 
+- Git
+- CMake 3.15 o superior
+- Un compilador de C compatible (MSVC, GCC o Clang)
 
-Código fuente original en C++:
-[link original (roto)](http://articulos.conclase.net/?tema=algoritmos&art=huffman&pag=000),
-[web archive](https://web.archive.org/web/20190912232030/http://articulos.conclase.net/?tema=algoritmos&art=huffman&pag=000).
+## Clonar el repositorio
 
-### Cambios en esta versión:
+```bash
+git clone https://github.com/TU-USUARIO/Compresor-Huffman.git
+cd Compresor-Huffman
+```
 
-- Código fue portado a C: mínimos cambios ya que el código original
-  en C++ no hacía uso de programación orientada a objetos, pero hacía
-  uso de referencias que no son compatibles con C.
-- Fix error en cómo se leía el archivo que causaba que no
-  se pudiera usar para comprimir archivos binarios o con más
-  de 128 caracteres diferentes.
-- Archivos fuentes re-encodeados a UTF-8 en vez del viejo
-  encoding ASCII _ISO-8859-1_, que hacía in-leíble los comentarios
-  con caracteres diacríticos en cualquier editor moderno.
-- También se agrega script para compilar con **CMake** ambos
-  comandos `compres` y `decompres`:
+## Compilar el proyecto
 
-      $ cmake . && make
+Desde la carpeta raíz:
 
-Al tener CMake configurado puede ser compilado en cualquier
-plataforma (no solo _*nix_), y directamente importado en **CLion**.
-Los comandos también pueden ser instalados en `/usr/local/bin`
-una vez ejecutado `cmake .` con `sudo make install`.
+```bash
+cmake -S . -B build
+cmake --build build --config Release
+```
 
-De todos modos los comandos también pueden ser compilados
-solo con un compilador C como **gcc**:
+## Ejecutar en Windows
 
-    $ cc compres.c -o compres
-    $ cc decompres.c -o decompres
+```powershell
+.\build\Release\huffman.exe
+```
 
-### Ejecución
+Si se compiló en Debug:
 
-Una vez generados los ejecutables, para comprimir un archivo:
+```powershell
+.\build\Debug\huffman.exe
+```
 
-    $ ./compres hello.txt hello.txt.compres
+## Ejecutar en Linux o macOS
 
-El archivo comprimido `hello.txt.compres` puede ser descomprimido
-luego con:
+```bash
+./build/huffman
+```
 
-    $ ./decompres hello.txt.compres hello.txt
+## Uso del programa
+
+Al ejecutar el programa se presenta un menú interactivo con las siguientes opciones:
+
+1. Comprimir archivo.
+2. Descomprimir archivo.
+3. Salir.
+
+El usuario debe proporcionar la ruta del archivo de entrada y la ruta donde desea guardar el resultado.
+
+## Pruebas
+
+La carpeta `pruebas/originales` contiene archivos de ejemplo para probar diferentes formatos.
+
+Se recomienda comprobar la integridad de los archivos restaurados mediante una comparación SHA-256 entre el original y el descomprimido.
+
+## Estructura del proyecto
+
+- `main.c`: interfaz de consola.
+- `compres.c`: lógica de compresión Huffman.
+- `decompres.c`: lógica de descompresión Huffman.
+- `huffman.h`: declaraciones de las funciones.
+- `CMakeLists.txt`: configuración de compilación.
